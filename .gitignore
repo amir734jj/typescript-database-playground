@@ -1,0 +1,26 @@
+# Dependencies
+/node_modules/
+
+# Build output and temporary files
+/dist/
+/out-tsc/
+/tmp/
+
+# Local configuration and SQLite databases
+/.env
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Package manager
+/.pnp
+/.pnp.js
+
+# IDE settings
+/.vscode/
+/.idea/

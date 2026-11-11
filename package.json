@@ -1,0 +1,27 @@
+{
+  "name": "sqlite-playground",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "db:generate": "drizzle-kit generate --config=src/drizzle.config.ts"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.18.0",
+    "dotenv": "^18.0.10",
+    "drizzle-orm": "^1.0.0-rc.5",
+    "drizzle-seed": "^1.0.0-rc.5",
+    "sql-template-strings": "^2.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "drizzle-kit": "^1.0.0-rc.5",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3"
+  },
+  "private": true
+}
