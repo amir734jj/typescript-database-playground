@@ -8,7 +8,7 @@ import { Project, User } from './entities';
 console.time('Database run');
 try {
     await runMigrations('up');
-    await seedData();
+    // await seedData();
     console.log('Database is ready; pending schema migrations have been applied.');
     let lastUserId = 0;
     while (true) {

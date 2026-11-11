@@ -4,7 +4,7 @@ import { sequelize } from './database.ts';
 import { Project, User } from './entities';
 import { logger } from './tools/logger.ts';
 
-const userCount = 10000000;
+const userCount = 10000;
 const projectsPerUser = 3;
 const batchSize = 10000;
 

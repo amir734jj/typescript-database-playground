@@ -22,7 +22,7 @@ export const sequelize = new Sequelize({
     models: Object.values(entities).filter(
         (entity) => entity.prototype instanceof Model,
     ),
-    logging: (sql) => logger.silent({ sql }, 'Executing SQL query'),
+    logging: (sql) => logger.info({ sql }, 'Executing SQL query'),
 });
 
 if (sequelize.options.storage !== ':memory:') {
