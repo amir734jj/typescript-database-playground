@@ -1,40 +1,30 @@
-# SQLite Playground
+# TypeScript Database Playground
 
-## Run
+Attempting to re-produce my great experience with .NET's [FluentMigration](https://github.com/fluentmigrator/fluentmigrator) in TypeScript
 
-Install dependencies and run the example:
+## Register entities
 
-```sh
-npm install
-npm run dev
-```
+Export new Sequelize model classes from `src/entities/index.ts`. Database setup
+automatically registers the exported subclasses of `Model`; no separate model
+list is required.
 
-The app creates `sqlite.db` in the project directory by default and ensures the
-example user exists. It generates fixture users only if the users table is empty,
-so existing users are preserved on subsequent runs. To use a different local or remote libSQL database, set
-`DB_FILE_NAME` in a `.env` file. For example:
+## Generate example data
 
-```env
-DB_FILE_NAME=file:./data.db
-```
-
-To build and run the compiled app:
+Run TypeScript directly with `npm run dev` (Node.js via tsx). To run compiled
+JavaScript instead, first run `npm run build`, then `npm start` (Node.js).
+The development command does not watch for file changes.
 
 ```sh
-npm run build
-npm start
+npm run db:seed
 ```
 
-Drizzle Kit uses `src/drizzle.config.ts` for schema operations.
+Both `npm run db:seed` and normal startup (`npm run dev` or `npm start` after
+`npm run build`) apply pending migrations, then use Faker to add 100 users with
+3 projects each (300 projects). The entire batch is transactional. These commands
+use the configured `DB_FILE_NAME` (default: `sqlite.db`).
 
-## Database schema changes
-
-Edit the Drizzle table definitions in `src/schema.ts`, then generate a migration:
-
-```sh
-npm run db:generate
-```
-
-Commit the generated files in `drizzle/`. The app applies pending migrations
-automatically at startup; there is no need to write table-creation SQL in the
-application code.
+Normal startup prints the total execution time, including connection cleanup,
+and deletes the configured database file after closing the connection, even if
+the main operation fails. Any existing data in that file is deleted too.
+In-memory databases do not require file cleanup. `npm run db:seed` preserves the
+database and adds another batch on every run.

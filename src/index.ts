@@ -1,31 +1,31 @@
-import { seed } from 'drizzle-seed';
-import { client, db, initializeDatabase, usersTable } from './schema.ts';
+import { rm } from 'node:fs/promises';
+import { Op } from 'sequelize';
+import { sequelize } from './database.ts';
+import { seedData } from './seed-data.ts';
+import { runMigrations } from './tools/migration/migrate.ts';
+import { Project, User } from './entities';
 
-import 'dotenv/config';
-import $sql from 'sql-template-strings';
-
+console.time('Database run');
 try {
-    await initializeDatabase();
-    const existingUsers = await db.select({ id: usersTable.id }).from(usersTable).limit(1);
-    if (existingUsers.length === 0) {
-        await seed(db, { usersTable });
-    }
-
-    const query = db.insert(usersTable).values({
-        name: 'John',
-        age: 25,
-        email: 'john@example.com',
-    }).toSQL();
-
-    console.log($sql.SQL(query.sql, query.params).query);
-
-    const readyToCopySql = db.dialect
-        .sqlToQuery(insert.getSQL().inlineParams())
-        .sql;
-
-    console.log(readyToCopySql);
-
-    console.log('Database is ready; the example user is present.');
+    await runMigrations('up');
+    await seedData();
+    console.log('Database is ready; pending schema migrations have been applied.');
+    const users = await User.findAll({
+        include: [{ model: Project, include: [User] }],
+        where: {
+            name: { [Op.ne]: 'Amir' },
+            age: { [Op.gt]: 18 }
+        },
+    });
+    // console.dir(users.map((user) => user.toJSON()), { depth: null });
 } finally {
-    client.close();
+    try {
+        await sequelize.close();
+        const databaseFile = sequelize.options.storage;
+        if (databaseFile) {
+            await rm(databaseFile, { force: true });
+        }
+    } finally {
+        console.timeEnd('Database run');
+    }
 }
