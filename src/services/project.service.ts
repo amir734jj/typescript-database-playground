@@ -1,28 +1,27 @@
-import { Op } from 'sequelize';
 import { Injectable } from '@nestjs/common';
 import { Project } from '../entities';
 
 @Injectable()
 export class ProjectService {
-    listPublic(afterId: number, limit: number): Promise<Project[]> {
+    listPublic(skip: number, limit: number): Promise<Project[]> {
         return Project.findAll({
-            where: { id: { [Op.gt]: afterId } },
             order: [['id', 'ASC']],
+            offset: skip,
             limit,
         });
     }
 
-    findOwned(id: number, userId: number): Promise<Project | null> {
+    findOwned(id: string, userId: string): Promise<Project | null> {
         return Project.findOne({ where: { id, userId } });
     }
 
-    create(data: { name: string; description: string | null; userId: number }): Promise<Project> {
+    create(data: { name: string; description: string | null; userId: string }): Promise<Project> {
         return Project.create(data);
     }
 
     async updateOwned(
-        id: number,
-        userId: number,
+        id: string,
+        userId: string,
         data: { name?: string; description?: string | null },
     ): Promise<Project | null> {
         const project = await this.findOwned(id, userId);
@@ -33,7 +32,7 @@ export class ProjectService {
         return project;
     }
 
-    async deleteOwned(id: number, userId: number): Promise<boolean> {
+    async deleteOwned(id: string, userId: string): Promise<boolean> {
         return (await Project.destroy({ where: { id, userId } })) > 0;
     }
 }

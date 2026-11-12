@@ -20,7 +20,7 @@ export class AdminController {
 
     @Patch('users/:id/role')
     @ApiOperation({ summary: 'Assign admin or basic role (admin only)' })
-    @ApiParam({ name: 'id', type: Number })
+    @ApiParam({ name: 'id', type: String, format: 'uuid' })
     @ApiBody({ type: UpdateRoleRequest })
     async setRole(@Param('id') id: string, @Body() body: UpdateRoleRequest) {
         return publicUser(await this.roles.setRole(routeId(id), body.role));

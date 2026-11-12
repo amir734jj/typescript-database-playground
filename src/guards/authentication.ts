@@ -17,7 +17,7 @@ export class JwtStrategy extends PassportStrategy(jwtStrategy.Strategy) {
         });
     }
 
-    async validate(request: AuthenticationRequest, payload: { sub?: string | number }) {
+    async validate(request: AuthenticationRequest, payload: { sub?: string }) {
         const token = getBearerToken(request);
         const user = token ? await this.auth.authenticate(token, payload.sub) : null;
         if (!user) {

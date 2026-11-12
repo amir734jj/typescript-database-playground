@@ -1,5 +1,5 @@
 import type { CreationOptional, InferAttributes, InferCreationAttributes, NonAttribute } from 'sequelize';
-import { AllowNull, AutoIncrement, BelongsToMany, Column, DataType, HasMany, Model, PrimaryKey, Table, Unique } from 'sequelize-typescript';
+import { AllowNull, BelongsToMany, Column, DataType, Default, HasMany, Model, PrimaryKey, Table, Unique } from 'sequelize-typescript';
 import { AccessToken } from './AccessToken.ts';
 import { Project } from './Project.ts';
 import { Role } from './Role.ts';
@@ -7,10 +7,10 @@ import { UserRole } from './UserRole.ts';
 
 @Table({ tableName: 'users_table', timestamps: true, underscored: true })
 export class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
-    @AutoIncrement
+    @Default(DataType.UUIDV4)
     @PrimaryKey
-    @Column(DataType.INTEGER)
-    declare id: CreationOptional<number>;
+    @Column(DataType.UUID)
+    declare id: CreationOptional<string>;
 
     @AllowNull(false)
     @Column(DataType.TEXT)

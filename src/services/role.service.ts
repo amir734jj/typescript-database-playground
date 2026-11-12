@@ -8,7 +8,7 @@ import { Role, User, UserRole } from '../entities';
 export class RoleService {
     constructor(@Inject(Sequelize) private readonly sequelize: Sequelize) {}
 
-    async assignInitialRoles(userId: number, isFirstUser: boolean): Promise<void> {
+    async assignInitialRoles(userId: string, isFirstUser: boolean): Promise<void> {
         const basicRole = await this.findRole(UserRoleName.BASIC);
         const roles = [basicRole];
         if (isFirstUser) {
@@ -17,7 +17,7 @@ export class RoleService {
         await UserRole.bulkCreate(roles.map((role) => ({ userId, roleId: role.id })));
     }
 
-    async hasRole(userId: number, roleName: UserRoleName): Promise<boolean> {
+    async hasRole(userId: string, roleName: UserRoleName): Promise<boolean> {
         const role = await Role.findOne({ where: { name: roleName } });
         if (!role) {
             throw new Error(`Required role ${roleName} is missing.`);
@@ -33,7 +33,7 @@ export class RoleService {
         });
     }
 
-    async setRole(userId: number, roleName: UserRoleName): Promise<User> {
+    async setRole(userId: string, roleName: UserRoleName): Promise<User> {
         return this.sequelize.transaction({ type: Transaction.TYPES.IMMEDIATE }, async () => {
             const user = await User.findByPk(userId);
             if (!user) {
@@ -68,7 +68,7 @@ export class RoleService {
         });
     }
 
-    async deleteUser(userId: number): Promise<void> {
+    async deleteUser(userId: string): Promise<void> {
         await this.sequelize.transaction({ type: Transaction.TYPES.IMMEDIATE }, async () => {
             const adminRole = await this.findRole(UserRoleName.ADMIN);
             const userIsAdmin = (await UserRole.count({

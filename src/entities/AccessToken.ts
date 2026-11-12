@@ -1,5 +1,5 @@
 import type { CreationOptional, InferAttributes, InferCreationAttributes, NonAttribute } from 'sequelize';
-import { AllowNull, AutoIncrement, BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table, Unique } from 'sequelize-typescript';
+import { AllowNull, BelongsTo, Column, DataType, Default, ForeignKey, Model, PrimaryKey, Table, Unique } from 'sequelize-typescript';
 import { User } from './User.ts';
 
 @Table({ tableName: 'access_tokens', timestamps: true, underscored: true })
@@ -7,15 +7,15 @@ export class AccessToken extends Model<
     InferAttributes<AccessToken>,
     InferCreationAttributes<AccessToken>
 > {
-    @AutoIncrement
+    @Default(DataType.UUIDV4)
     @PrimaryKey
-    @Column(DataType.INTEGER)
-    declare id: CreationOptional<number>;
+    @Column(DataType.UUID)
+    declare id: CreationOptional<string>;
 
     @ForeignKey(() => User)
     @AllowNull(false)
-    @Column({ type: DataType.INTEGER, field: 'user_id' })
-    declare userId: number;
+    @Column({ type: DataType.UUID, field: 'user_id' })
+    declare userId: string;
 
     @Unique
     @AllowNull(false)

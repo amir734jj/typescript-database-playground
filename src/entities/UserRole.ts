@@ -7,11 +7,11 @@ import { User } from './User.ts';
 export class UserRole extends Model<InferAttributes<UserRole>, InferCreationAttributes<UserRole>> {
     @ForeignKey(() => User)
     @PrimaryKey
-    @Column({ type: DataType.INTEGER, field: 'user_id' })
-    declare userId: number;
+    @Column({ type: DataType.UUID, field: 'user_id' })
+    declare userId: string;
 
     @ForeignKey(() => Role)
     @PrimaryKey
-    @Column({ type: DataType.INTEGER, field: 'role_id' })
-    declare roleId: number;
+    @Column({ type: DataType.UUID, field: 'role_id' })
+    declare roleId: string;
 }

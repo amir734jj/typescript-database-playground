@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { DateTime } from 'luxon';
 import { Op, Transaction } from 'sequelize';
 import { ConflictException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { isUUID } from 'class-validator';
 import { Sequelize } from 'sequelize-typescript';
 import type { AuthenticatedUser } from '../interfaces';
 import { User } from '../entities';
@@ -69,15 +70,11 @@ export class AuthService {
     }
 
     async authenticate(token: string, subject: unknown): Promise<User | null> {
-        if (!_.isString(subject) && !_.isNumber(subject)) {
+        if (typeof subject !== 'string' || !isUUID(subject, '4')) {
             return null;
         }
-        const userId = _.toNumber(subject);
-        if (!_.isSafeInteger(userId) || userId < 1) {
-            return null;
-        }
-        const storedToken = await this.tokens.findValid(hashToken(token), userId);
-        return storedToken ? this.users.findById(userId) : null;
+        const storedToken = await this.tokens.findValid(hashToken(token), subject);
+        return storedToken ? this.users.findById(subject) : null;
     }
 
     async logout(token: string): Promise<void> {
@@ -94,7 +91,7 @@ export class AuthService {
     }
 
     private async issueToken(user: Pick<User, 'id'>): Promise<{ accessToken: string; expiresAt: Date }> {
-        const accessToken = jwt.sign({ sub: String(user.id) }, getJwtSecret(), {
+        const accessToken = jwt.sign({ sub: user.id }, getJwtSecret(), {
             expiresIn: tokenLifetimeSeconds,
             jwtid: randomUUID(),
         });

@@ -5,13 +5,13 @@ import { AccessToken } from '../entities';
 
 @Injectable()
 export class AccessTokenService {
-    create(data: { userId: number; tokenHash: string; expiresAt: Date }): Promise<AccessToken> {
+    create(data: { userId: string; tokenHash: string; expiresAt: Date }): Promise<AccessToken> {
         return AccessToken.create(data);
     }
 
     findValid(
         tokenHash: string,
-        userId: number,
+        userId: string,
         now = DateTime.utc().toJSDate(),
     ): Promise<AccessToken | null> {
         return AccessToken.findOne({

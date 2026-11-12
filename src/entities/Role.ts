@@ -1,14 +1,14 @@
 import type { CreationOptional, InferAttributes, InferCreationAttributes, NonAttribute } from 'sequelize';
-import { AllowNull, AutoIncrement, BelongsToMany, Column, DataType, Model, PrimaryKey, Table, Unique } from 'sequelize-typescript';
+import { AllowNull, BelongsToMany, Column, DataType, Default, Model, PrimaryKey, Table, Unique } from 'sequelize-typescript';
 import { User } from './User.ts';
 import { UserRole } from './UserRole.ts';
 
 @Table({ tableName: 'roles', timestamps: false, underscored: true })
 export class Role extends Model<InferAttributes<Role>, InferCreationAttributes<Role>> {
-    @AutoIncrement
+    @Default(DataType.UUIDV4)
     @PrimaryKey
-    @Column(DataType.INTEGER)
-    declare id: CreationOptional<number>;
+    @Column(DataType.UUID)
+    declare id: CreationOptional<string>;
 
     @Unique
     @AllowNull(false)

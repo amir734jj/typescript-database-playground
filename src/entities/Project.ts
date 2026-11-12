@@ -1,13 +1,13 @@
 import type { CreationOptional, InferAttributes, InferCreationAttributes, NonAttribute } from 'sequelize';
-import { AllowNull, AutoIncrement, BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { AllowNull, BelongsTo, Column, DataType, Default, ForeignKey, Model, PrimaryKey, Table } from 'sequelize-typescript';
 import { User } from './User.ts';
 
 @Table({ tableName: 'projects', timestamps: true, underscored: true })
 export class Project extends Model<InferAttributes<Project>, InferCreationAttributes<Project>> {
-    @AutoIncrement
+    @Default(DataType.UUIDV4)
     @PrimaryKey
-    @Column(DataType.INTEGER)
-    declare id: CreationOptional<number>;
+    @Column(DataType.UUID)
+    declare id: CreationOptional<string>;
 
     @AllowNull(false)
     @Column(DataType.TEXT)
@@ -19,8 +19,8 @@ export class Project extends Model<InferAttributes<Project>, InferCreationAttrib
 
     @ForeignKey(() => User)
     @AllowNull(false)
-    @Column({ type: DataType.INTEGER, field: 'user_id' })
-    declare userId: number;
+    @Column({ type: DataType.UUID, field: 'user_id' })
+    declare userId: string;
 
     @BelongsTo(() => User, { foreignKey: 'userId' })
     declare user?: NonAttribute<User>;

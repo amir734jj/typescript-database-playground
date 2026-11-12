@@ -1,9 +1,9 @@
 import { BadRequestException } from '@nestjs/common';
+import { isUUID } from 'class-validator';
 
-export function routeId(value: string): number {
-    const id = Number(value);
-    if (!Number.isSafeInteger(id) || id < 1) {
-        throw new BadRequestException('id must be a positive integer.');
+export function routeId(value: string): string {
+    if (!isUUID(value, '4')) {
+        throw new BadRequestException('id must be a UUID.');
     }
-    return id;
+    return value;
 }

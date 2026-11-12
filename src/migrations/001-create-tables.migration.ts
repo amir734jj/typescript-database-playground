@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { DataTypes, type QueryInterface } from 'sequelize';
 import { Migration } from '../tools/migration/migration.ts';
 
@@ -5,7 +6,7 @@ import { Migration } from '../tools/migration/migration.ts';
 export class CreateTables {
     async up(database: QueryInterface): Promise<void> {
         await database.createTable('users_table', {
-            id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+            id: { type: DataTypes.UUID, primaryKey: true },
             name: { type: DataTypes.TEXT, allowNull: false },
             age: { type: DataTypes.INTEGER, allowNull: false },
             email: { type: DataTypes.TEXT, allowNull: false, unique: true },
@@ -14,11 +15,11 @@ export class CreateTables {
             updated_at: { type: DataTypes.DATE, allowNull: false },
         });
         await database.createTable('projects', {
-            id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+            id: { type: DataTypes.UUID, primaryKey: true },
             name: { type: DataTypes.TEXT, allowNull: false },
             description: { type: DataTypes.TEXT, allowNull: true },
             user_id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 allowNull: false,
                 references: { model: 'users_table', key: 'id' },
                 onUpdate: 'CASCADE',
@@ -28,9 +29,9 @@ export class CreateTables {
             updated_at: { type: DataTypes.DATE, allowNull: false },
         });
         await database.createTable('access_tokens', {
-            id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+            id: { type: DataTypes.UUID, primaryKey: true },
             user_id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 allowNull: false,
                 references: { model: 'users_table', key: 'id' },
                 onUpdate: 'CASCADE',
@@ -43,12 +44,12 @@ export class CreateTables {
         });
         await database.addIndex('access_tokens', ['user_id', 'expires_at']);
         await database.createTable('roles', {
-            id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+            id: { type: DataTypes.UUID, primaryKey: true },
             name: { type: DataTypes.TEXT, allowNull: false, unique: true },
         });
         await database.createTable('user_roles', {
             user_id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 primaryKey: true,
                 allowNull: false,
                 references: { model: 'users_table', key: 'id' },
@@ -56,7 +57,7 @@ export class CreateTables {
                 onDelete: 'CASCADE',
             },
             role_id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 primaryKey: true,
                 allowNull: false,
                 references: { model: 'roles', key: 'id' },
@@ -64,7 +65,10 @@ export class CreateTables {
                 onDelete: 'CASCADE',
             },
         });
-        await database.bulkInsert('roles', [{ name: 'admin' }, { name: 'basic' }]);
+        await database.bulkInsert('roles', [
+            { id: randomUUID(), name: 'admin' },
+            { id: randomUUID(), name: 'basic' },
+        ]);
     }
 
     async down(database: QueryInterface): Promise<void> {

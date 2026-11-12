@@ -14,15 +14,22 @@ export class ProjectsController {
 
     @Get()
     @ApiOperation({ summary: 'List all public projects' })
-    @ApiQuery({ name: 'afterId', required: false, schema: { type: 'integer', minimum: 0 } })
+    @ApiQuery({ name: 'skip', required: false, schema: { type: 'integer', minimum: 0, default: 0 } })
     @ApiQuery({ name: 'limit', required: false, schema: { type: 'integer', minimum: 1, maximum: 100, default: 50 } })
-    async list(@Query('afterId') afterIdValue: unknown, @Query('limit') limitValue: unknown) {
-        const afterId = afterIdValue === undefined ? 0 : routeId(String(afterIdValue));
-        const limit = limitValue === undefined ? 50 : Number(limitValue);
+    async list(@Query() query: { skip?: unknown; limit?: unknown; afterId?: unknown }) {
+        if (query.afterId !== undefined) {
+            throw new BadRequestException('afterId is no longer supported; use skip instead.');
+        }
+        const skip = query.skip === undefined ? 0 : Number(query.skip);
+        if ((query.skip !== undefined && (typeof query.skip !== 'string' || !/^\d+$/.test(query.skip)))
+            || !Number.isSafeInteger(skip) || skip < 0) {
+            throw new BadRequestException('skip must be a non-negative integer.');
+        }
+        const limit = query.limit === undefined ? 50 : Number(query.limit);
         if (!Number.isSafeInteger(limit) || limit < 1 || limit > 100) {
             throw new BadRequestException('limit must be an integer between 1 and 100.');
         }
-        return (await this.projects.listPublic(afterId, limit)).map(publicProject);
+        return (await this.projects.listPublic(skip, limit)).map(publicProject);
     }
 
     @Post()
@@ -45,7 +52,7 @@ export class ProjectsController {
     @UseGuards(JwtAuthenticationGuard)
     @ApiBearerAuth('bearerAuth')
     @ApiOperation({ summary: 'Read an owned project' })
-    @ApiParam({ name: 'id', type: Number })
+    @ApiParam({ name: 'id', type: String, format: 'uuid' })
     async find(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
         const project = await this.projects.findOwned(routeId(id), user.id);
         if (!project) {
@@ -58,7 +65,7 @@ export class ProjectsController {
     @UseGuards(JwtAuthenticationGuard)
     @ApiBearerAuth('bearerAuth')
     @ApiOperation({ summary: 'Update an owned project' })
-    @ApiParam({ name: 'id', type: Number })
+    @ApiParam({ name: 'id', type: String, format: 'uuid' })
     @ApiBody({ type: UpdateProjectRequest })
     async update(
         @CurrentUser() user: AuthenticatedUser,
@@ -83,7 +90,7 @@ export class ProjectsController {
     @UseGuards(JwtAuthenticationGuard)
     @ApiBearerAuth('bearerAuth')
     @ApiOperation({ summary: 'Delete an owned project' })
-    @ApiParam({ name: 'id', type: Number })
+    @ApiParam({ name: 'id', type: String, format: 'uuid' })
     async delete(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
         if (!(await this.projects.deleteOwned(routeId(id), user.id))) {
             throw new NotFoundException('Project not found.');

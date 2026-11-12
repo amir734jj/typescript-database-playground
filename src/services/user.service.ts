@@ -7,7 +7,7 @@ export class UserService {
         return User.findOne({ where: { email } });
     }
 
-    findById(id: number): Promise<User | null> {
+    findById(id: string): Promise<User | null> {
         return User.findByPk(id, {
             include: [{ model: Role, attributes: ['name'], through: { attributes: [] } }],
         });
@@ -20,7 +20,7 @@ export class UserService {
     }
 
     async update(
-        id: number,
+        id: string,
         data: { name?: string; age?: number; email?: string },
     ): Promise<User | null> {
         const user = await User.findByPk(id);
@@ -31,7 +31,7 @@ export class UserService {
         return user;
     }
 
-    async delete(id: number): Promise<boolean> {
+    async delete(id: string): Promise<boolean> {
         return (await User.destroy({ where: { id } })) > 0;
     }
 }
