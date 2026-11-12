@@ -1,7 +1,7 @@
 import { Op } from 'sequelize';
 import { Injectable } from '@nestjs/common';
 import { DateTime } from 'luxon';
-import { AccessToken } from '../entities/AccessToken.ts';
+import { AccessToken } from '../entities';
 
 @Injectable()
 export class AccessTokenService {

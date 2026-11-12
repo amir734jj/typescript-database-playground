@@ -7,7 +7,7 @@ import { Op, Transaction } from 'sequelize';
 import { ConflictException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
 import type { AuthenticatedUser } from '../interfaces';
-import { User } from '../entities/User.ts';
+import { User } from '../entities';
 import { AccessTokenService } from './access-token.service.ts';
 import { RoleService } from './role.service.ts';
 import { UserService } from './user.service.ts';

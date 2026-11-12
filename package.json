@@ -5,13 +5,13 @@
   "type": "module",
   "main": "dist/nest/app.js",
   "scripts": {
-    "build": "nest build",
+    "build": "nest build && tsc-alias -p tsconfig.build.json --resolve-full-paths --resolve-full-extension .js",
     "lint": "eslint . --ext .ts,.mjs,.cjs",
     "lint:fix": "eslint . --ext .ts,.mjs,.cjs --fix",
     "dev": "npm run build && node dist/nest/app.js",
     "start": "node dist/nest/app.js",
     "api:dev": "npm run dev",
-    "api:start": "node dist/app.js",
+    "api:start": "npm start",
     "db:up": "tsx src/tools/migration/migration-cli.ts up",
     "db:down": "tsx src/tools/migration/migration-cli.ts down"
   },
