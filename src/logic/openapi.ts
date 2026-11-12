@@ -3,7 +3,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 export function setupOpenApi(app: INestApplication): void {
     const config = new DocumentBuilder()
-        .setTitle('SQLite Playground API')
+        .setTitle('API Playground API')
         .setVersion('1.0.0')
         .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'bearerAuth')
         .build();
