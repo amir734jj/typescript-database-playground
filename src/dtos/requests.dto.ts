@@ -1,4 +1,5 @@
 import { Transform } from 'class-transformer';
+import _ from 'lodash';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
     IsEmail,
@@ -17,8 +18,13 @@ import {
 import { UserRoleName } from '../enums';
 import { PasswordByteLength } from '../validators';
 
-const trim = ({ value }: { value: unknown }) => (typeof value === 'string' ? value.trim() : value);
-const normalizeEmail = ({ value }: { value: unknown }) => (typeof value === 'string' ? value.trim().toLowerCase() : value);
+const trim = ({ value }: { value: unknown }) => (_.isString(value) ? value.trim() : value);
+const normalizeEmail = ({ value }: { value: unknown }) => (
+    _.isString(value) ? value.trim().toLowerCase() : value
+);
+const parseQueryInteger = ({ value }: { value: unknown }) => (
+    _.isString(value) && /^\d+$/.test(value) ? _.toNumber(value) : value
+);
 
 export class RegisterRequest {
     @ApiProperty({ type: String, minLength: 1, maxLength: 100 })
@@ -83,6 +89,22 @@ export class UpdateUserRequest {
     @IsEmail()
     @MaxLength(254)
     email?: string;
+}
+
+export class ListProjectsRequest {
+    @ApiPropertyOptional({ type: 'integer', minimum: 0, maximum: Number.MAX_SAFE_INTEGER, default: 0 })
+    @Transform(parseQueryInteger)
+    @IsInt()
+    @Min(0)
+    @Max(Number.MAX_SAFE_INTEGER)
+    skip = 0;
+
+    @ApiPropertyOptional({ type: 'integer', minimum: 1, maximum: 100, default: 50 })
+    @Transform(parseQueryInteger)
+    @IsInt()
+    @Min(1)
+    @Max(100)
+    limit = 50;
 }
 
 export class CreateProjectRequest {
