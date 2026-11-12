@@ -1,6 +1,6 @@
 import { readdir } from 'node:fs/promises';
 import _ from 'lodash';
-import { isMigration, type VersionedMigration } from './migration.js';
+import { isMigration, type VersionedMigration } from './migration.ts';
 
 export async function discoverMigrations(): Promise<VersionedMigration[]> {
     const isSource = import.meta.url.endsWith('.ts');

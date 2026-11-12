@@ -1,8 +1,8 @@
 import { Inject, Module, type OnApplicationShutdown } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Sequelize } from 'sequelize-typescript';
-import { createDatabase } from '../database.js';
-import { logger } from '../tools/logger.js';
+import { createDatabase } from '../database.ts';
+import { logger } from '../tools/logger.ts';
 
 @Module({
     imports: [ConfigModule.forRoot()],

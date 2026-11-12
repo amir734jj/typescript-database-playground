@@ -1,10 +1,10 @@
 import { ForbiddenException, Inject, Injectable, UnauthorizedException, type CanActivate, type ExecutionContext } from '@nestjs/common';
 import { AuthGuard, PassportStrategy } from '@nestjs/passport';
 import jwtStrategy from 'passport-jwt';
-import { getJwtSecret, AuthService, RoleService } from '../services/index.js';
-import { UserRoleName } from '../enums/index.js';
-import type { AuthenticationRequest } from '../interfaces/index.js';
-import { getAuthenticatedUser, getBearerToken } from '../logic/index.js';
+import { getJwtSecret, AuthService, RoleService } from '../services';
+import { UserRoleName } from '../enums';
+import type { AuthenticationRequest } from '../interfaces';
+import { getAuthenticatedUser, getBearerToken } from '../logic';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(jwtStrategy.Strategy) {

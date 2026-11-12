@@ -2,10 +2,10 @@ import { join } from 'node:path';
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { AccessTokenService, AuthService, ProjectService, RoleService, UserService } from '../services/index.js';
-import { AdminGuard, JwtAuthenticationGuard, JwtStrategy } from '../guards/index.js';
-import { AdminController, ApiNotFoundController, AuthController, HealthController, ProjectsController, UsersController } from '../controllers/index.js';
-import { DatabaseModule } from './database.module.js';
+import { AccessTokenService, AuthService, ProjectService, RoleService, UserService } from '../services';
+import { AdminGuard, JwtAuthenticationGuard, JwtStrategy } from '../guards';
+import { AdminController, ApiNotFoundController, AuthController, HealthController, ProjectsController, UsersController } from '../controllers';
+import { DatabaseModule } from './database.module.ts';
 
 @Module({
     imports: [

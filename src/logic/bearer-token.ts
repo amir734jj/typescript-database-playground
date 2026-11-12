@@ -1,5 +1,5 @@
 import { ExtractJwt } from 'passport-jwt';
-import type { AuthenticationRequest } from '../interfaces/index.js';
+import type { AuthenticationRequest } from '../interfaces';
 
 const extractBearerToken = ExtractJwt.fromAuthHeaderAsBearerToken();
 

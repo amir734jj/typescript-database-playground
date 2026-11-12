@@ -1,10 +1,10 @@
 import { Transaction } from 'sequelize';
 import { ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
-import { UserRoleName } from '../enums/index.js';
-import { Role } from '../entities/Role.js';
-import { User } from '../entities/User.js';
-import { UserRole } from '../entities/UserRole.js';
+import { UserRoleName } from '../enums';
+import { Role } from '../entities/Role.ts';
+import { User } from '../entities/User.ts';
+import { UserRole } from '../entities/UserRole.ts';
 
 @Injectable()
 export class RoleService {

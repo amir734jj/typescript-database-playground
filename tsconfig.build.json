@@ -2,6 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "noEmit": false,
-    "outDir": "./dist/nest"
+    "outDir": "./dist/nest",
+    "module": "commonjs",
+    "moduleResolution": "node"
   }
 }

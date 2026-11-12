@@ -1,6 +1,6 @@
 import type { CreationOptional, InferAttributes, InferCreationAttributes, NonAttribute } from 'sequelize';
 import { AllowNull, AutoIncrement, BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table, Unique } from 'sequelize-typescript';
-import { User } from './User.js';
+import { User } from './User.ts';
 
 @Table({ tableName: 'access_tokens', timestamps: true, underscored: true })
 export class AccessToken extends Model<

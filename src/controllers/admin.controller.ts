@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Inject, Param, Patch, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { RoleService } from '../services/index.js';
-import { AdminGuard, JwtAuthenticationGuard } from '../guards/index.js';
-import { UpdateRoleRequest } from '../dtos/index.js';
-import { publicUser, routeId } from '../logic/index.js';
+import { RoleService } from '../services';
+import { AdminGuard, JwtAuthenticationGuard } from '../guards';
+import { UpdateRoleRequest } from '../dtos';
+import { publicUser, routeId } from '../logic';
 
 @ApiTags('Administration')
 @ApiBearerAuth('bearerAuth')

@@ -1,11 +1,11 @@
 import { BadRequestException, Body, Controller, Delete, Get, HttpCode, Inject, NotFoundException, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { ProjectService } from '../services/index.js';
-import { JwtAuthenticationGuard } from '../guards/index.js';
-import { CreateProjectRequest, UpdateProjectRequest } from '../dtos/index.js';
-import { CurrentUser } from '../decorators/index.js';
-import type { AuthenticatedUser } from '../interfaces/index.js';
-import { publicProject, routeId } from '../logic/index.js';
+import { ProjectService } from '../services';
+import { JwtAuthenticationGuard } from '../guards';
+import { CreateProjectRequest, UpdateProjectRequest } from '../dtos';
+import { CurrentUser } from '../decorators';
+import type { AuthenticatedUser } from '../interfaces';
+import { publicProject, routeId } from '../logic';
 
 @ApiTags('Projects')
 @Controller('projects')

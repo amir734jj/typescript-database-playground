@@ -1,7 +1,7 @@
 import type { QueryInterface } from 'sequelize';
 import type { Sequelize } from 'sequelize-typescript';
 import { SequelizeStorage, Umzug, type MigrationParams } from 'umzug';
-import { discoverMigrations } from './discover-migrations.js';
+import { discoverMigrations } from './discover-migrations.ts';
 
 const migrations = (await discoverMigrations()).map((MigrationClass) => {
     const migration = new MigrationClass();

@@ -1,1 +1,1 @@
-export * from './password-byte-length.validator.js';
+export * from './password-byte-length.validator.ts';

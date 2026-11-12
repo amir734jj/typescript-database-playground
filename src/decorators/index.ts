@@ -1,1 +1,1 @@
-export * from './authentication.decorator.js';
+export * from './authentication.decorator.ts';

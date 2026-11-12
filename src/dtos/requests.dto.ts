@@ -14,8 +14,8 @@ import {
     Validate,
     ValidateIf,
 } from 'class-validator';
-import { UserRoleName } from '../enums/index.js';
-import { PasswordByteLength } from '../validators/index.js';
+import { UserRoleName } from '../enums';
+import { PasswordByteLength } from '../validators';
 
 const trim = ({ value }: { value: unknown }) => (typeof value === 'string' ? value.trim() : value);
 const normalizeEmail = ({ value }: { value: unknown }) => (typeof value === 'string' ? value.trim().toLowerCase() : value);

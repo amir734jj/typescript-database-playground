@@ -1,6 +1,6 @@
 import { Op } from 'sequelize';
 import { Injectable } from '@nestjs/common';
-import { Project } from '../entities/Project.js';
+import { Project } from '../entities/Project.ts';
 
 @Injectable()
 export class ProjectService {

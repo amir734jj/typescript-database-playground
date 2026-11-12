@@ -1,6 +1,6 @@
 import { createParamDecorator, UnauthorizedException, type ExecutionContext } from '@nestjs/common';
-import type { AuthenticationRequest } from '../interfaces/index.js';
-import { getAuthenticatedUser, getBearerToken } from '../logic/index.js';
+import type { AuthenticationRequest } from '../interfaces';
+import { getAuthenticatedUser, getBearerToken } from '../logic';
 
 export const CurrentUser = createParamDecorator((_data: unknown, context: ExecutionContext) => {
     const request = context.switchToHttp().getRequest<AuthenticationRequest>();

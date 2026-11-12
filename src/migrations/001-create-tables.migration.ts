@@ -1,5 +1,5 @@
 import { DataTypes, type QueryInterface } from 'sequelize';
-import { Migration } from '../tools/migration/migration.js';
+import { Migration } from '../tools/migration/migration.ts';
 
 @Migration(20261111_001, '00000001-initial_schema.cjs')
 export class CreateTables {

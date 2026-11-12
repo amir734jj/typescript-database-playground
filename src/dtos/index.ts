@@ -1,1 +1,1 @@
-export * from './requests.dto.js';
+export * from './requests.dto.ts';

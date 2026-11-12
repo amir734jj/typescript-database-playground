@@ -1,7 +1,7 @@
 import { Catch, HttpException, type ArgumentsHost, type ExceptionFilter } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import { UniqueConstraintError } from 'sequelize';
-import { logger } from '../tools/logger.js';
+import { logger } from '../tools/logger.ts';
 
 @Catch()
 export class ApiExceptionFilter implements ExceptionFilter {

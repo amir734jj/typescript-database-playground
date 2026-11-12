@@ -1,11 +1,11 @@
 import { Body, Controller, HttpCode, Inject, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthService } from '../services/index.js';
-import { JwtAuthenticationGuard } from '../guards/index.js';
-import { LoginRequest, RegisterRequest } from '../dtos/index.js';
-import { BearerToken, CurrentUser } from '../decorators/index.js';
-import type { AuthenticatedUser } from '../interfaces/index.js';
-import { publicUser } from '../logic/index.js';
+import { AuthService } from '../services';
+import { JwtAuthenticationGuard } from '../guards';
+import { LoginRequest, RegisterRequest } from '../dtos';
+import { BearerToken, CurrentUser } from '../decorators';
+import type { AuthenticatedUser } from '../interfaces';
+import { publicUser } from '../logic';
 
 @ApiTags('Authentication')
 @Controller('auth')

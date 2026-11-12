@@ -1,2 +1,2 @@
-export * from './app.module.js';
-export * from './database.module.js';
+export * from './app.module.ts';
+export * from './database.module.ts';

@@ -1,1 +1,1 @@
-export * from './body-validation.pipe.js';
+export * from './body-validation.pipe.ts';

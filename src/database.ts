@@ -3,8 +3,8 @@ import cls from 'cls-hooked';
 import { fileURLToPath } from 'node:url';
 import { QueryTypes } from 'sequelize';
 import { Model, Sequelize } from 'sequelize-typescript';
-import * as entities from './entities/index.js';
-import { logger } from './tools/logger.js';
+import * as entities from './entities';
+import { logger } from './tools/logger.ts';
 
 Sequelize.useCLS(cls.createNamespace('sqlite-playground'));
 

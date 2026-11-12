@@ -1,1 +1,1 @@
-export * from './authentication.js';
+export * from './authentication.ts';

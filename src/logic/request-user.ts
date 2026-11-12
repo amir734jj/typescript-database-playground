@@ -1,5 +1,5 @@
 import { UnauthorizedException } from '@nestjs/common';
-import type { AuthenticatedUser, AuthenticationRequest } from '../interfaces/index.js';
+import type { AuthenticatedUser, AuthenticationRequest } from '../interfaces';
 
 export function getAuthenticatedUser(request: Pick<AuthenticationRequest, 'user'>): AuthenticatedUser {
     const { user } = request;

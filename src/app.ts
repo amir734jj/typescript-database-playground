@@ -4,12 +4,12 @@ import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { pinoHttp } from 'pino-http';
 import { Sequelize } from 'sequelize-typescript';
-import { ApiModule } from './modules/index.js';
-import { ApiExceptionFilter, setupOpenApi } from './logic/index.js';
-import { getJwtSecret } from './services/index.js';
-import { BodyValidationPipe } from './pipes/index.js';
-import { logger } from './tools/logger.js';
-import { runMigrations } from './tools/migration/migrate.js';
+import { ApiModule } from './modules';
+import { ApiExceptionFilter, setupOpenApi } from './logic';
+import { getJwtSecret } from './services';
+import { BodyValidationPipe } from './pipes';
+import { logger } from './tools/logger.ts';
+import { runMigrations } from './tools/migration/migrate.ts';
 
 getJwtSecret();
 

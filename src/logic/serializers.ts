@@ -1,5 +1,5 @@
-import type { Project } from '../entities/Project.js';
-import type { AuthenticatedUser } from '../interfaces/index.js';
+import type { Project } from '../entities/Project.ts';
+import type { AuthenticatedUser } from '../interfaces';
 
 export function publicUser(user: AuthenticatedUser) {
     return {

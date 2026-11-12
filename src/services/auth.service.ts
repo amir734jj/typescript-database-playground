@@ -6,11 +6,11 @@ import { DateTime } from 'luxon';
 import { Op, Transaction } from 'sequelize';
 import { ConflictException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
-import type { AuthenticatedUser } from '../interfaces/index.js';
-import { User } from '../entities/User.js';
-import { AccessTokenService } from './access-token.service.js';
-import { RoleService } from './role.service.js';
-import { UserService } from './user.service.js';
+import type { AuthenticatedUser } from '../interfaces';
+import { User } from '../entities/User.ts';
+import { AccessTokenService } from './access-token.service.ts';
+import { RoleService } from './role.service.ts';
+import { UserService } from './user.service.ts';
 
 const tokenLifetimeSeconds = 60 * 60;
 

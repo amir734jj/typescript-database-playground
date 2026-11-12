@@ -1,12 +1,12 @@
 import { BadRequestException, Body, Controller, Delete, Get, HttpCode, Inject, NotFoundException, Patch, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import _ from 'lodash';
-import { RoleService, UserService } from '../services/index.js';
-import { JwtAuthenticationGuard } from '../guards/index.js';
-import { UpdateUserRequest } from '../dtos/index.js';
-import { CurrentUser } from '../decorators/index.js';
-import type { AuthenticatedUser } from '../interfaces/index.js';
-import { publicUser } from '../logic/index.js';
+import { RoleService, UserService } from '../services';
+import { JwtAuthenticationGuard } from '../guards';
+import { UpdateUserRequest } from '../dtos';
+import { CurrentUser } from '../decorators';
+import type { AuthenticatedUser } from '../interfaces';
+import { publicUser } from '../logic';
 
 @ApiTags('Users')
 @ApiBearerAuth('bearerAuth')

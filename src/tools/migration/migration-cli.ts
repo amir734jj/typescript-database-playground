@@ -1,5 +1,5 @@
-import { sequelize } from '../../cli-database.js';
-import { runMigrations } from './migrate.js';
+import { sequelize } from '../../cli-database.ts';
+import { runMigrations } from './migrate.ts';
 
 try {
     const direction = process.argv[2];

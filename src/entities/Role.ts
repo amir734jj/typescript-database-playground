@@ -1,7 +1,7 @@
 import type { CreationOptional, InferAttributes, InferCreationAttributes, NonAttribute } from 'sequelize';
 import { AllowNull, AutoIncrement, BelongsToMany, Column, DataType, Model, PrimaryKey, Table, Unique } from 'sequelize-typescript';
-import { User } from './User.js';
-import { UserRole } from './UserRole.js';
+import { User } from './User.ts';
+import { UserRole } from './UserRole.ts';
 
 @Table({ tableName: 'roles', timestamps: false, underscored: true })
 export class Role extends Model<InferAttributes<Role>, InferCreationAttributes<Role>> {

@@ -1,9 +1,9 @@
 import type { CreationOptional, InferAttributes, InferCreationAttributes, NonAttribute } from 'sequelize';
 import { AllowNull, AutoIncrement, BelongsToMany, Column, DataType, HasMany, Model, PrimaryKey, Table, Unique } from 'sequelize-typescript';
-import { AccessToken } from './AccessToken.js';
-import { Project } from './Project.js';
-import { Role } from './Role.js';
-import { UserRole } from './UserRole.js';
+import { AccessToken } from './AccessToken.ts';
+import { Project } from './Project.ts';
+import { Role } from './Role.ts';
+import { UserRole } from './UserRole.ts';
 
 @Table({ tableName: 'users_table', timestamps: true, underscored: true })
 export class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
