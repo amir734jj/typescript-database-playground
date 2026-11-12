@@ -1,8 +1,8 @@
 import type { CreationOptional, InferAttributes, InferCreationAttributes, NonAttribute } from 'sequelize';
 import { AllowNull, AutoIncrement, BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table } from 'sequelize-typescript';
-import { User } from './User.ts';
+import { User } from './User.js';
 
-@Table({ tableName: 'projects', timestamps: false })
+@Table({ tableName: 'projects', timestamps: true, underscored: true })
 export class Project extends Model<InferAttributes<Project>, InferCreationAttributes<Project>> {
     @AutoIncrement
     @PrimaryKey

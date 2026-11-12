@@ -1,12 +1,12 @@
-import { sequelize } from '../../database.ts';
-import { runMigrations } from './migrate.ts';
+import { sequelize } from '../../cli-database.js';
+import { runMigrations } from './migrate.js';
 
 try {
     const direction = process.argv[2];
     if (direction !== 'up' && direction !== 'down') {
         throw new Error('Specify a migration direction: up or down.');
     }
-    await runMigrations(direction);
+    await runMigrations(direction, sequelize);
 } finally {
     await sequelize.close();
 }

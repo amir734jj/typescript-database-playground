@@ -1,10 +1,10 @@
 import { readdir } from 'node:fs/promises';
 import _ from 'lodash';
-import { isMigration, type VersionedMigration } from './migration.ts';
+import { isMigration, type VersionedMigration } from './migration.js';
 
 export async function discoverMigrations(): Promise<VersionedMigration[]> {
     const isSource = import.meta.url.endsWith('.ts');
-    const directory = new URL(isSource ? '../../migrations/' : './migrations/', import.meta.url);
+    const directory = new URL('../../migrations/', import.meta.url);
     const suffix = isSource ? '.migration.ts' : '.migration.js';
     const files = (await readdir(directory, { withFileTypes: true }))
         .filter((file) => file.isFile() && file.name.endsWith(suffix));
@@ -19,7 +19,7 @@ export async function discoverMigrations(): Promise<VersionedMigration[]> {
 
     const versions = new Set<number>();
     const names = new Set<string>();
-    for (const migration of migrations) {
+    migrations.forEach((migration) => {
         if (versions.has(migration.migrationVersion)) {
             throw new Error(`Duplicate migration version: ${migration.migrationVersion}.`);
         }
@@ -28,7 +28,7 @@ export async function discoverMigrations(): Promise<VersionedMigration[]> {
         }
         versions.add(migration.migrationVersion);
         names.add(migration.migrationName);
-    }
+    });
 
     return _.sortBy(migrations, 'migrationVersion');
 }
