@@ -62,7 +62,7 @@ export class CreateTables {
                 references: { model: 'roles', key: 'id' },
                 onUpdate: 'CASCADE',
                 onDelete: 'CASCADE',
-            }
+            },
         });
         await database.bulkInsert('roles', [{ name: 'admin' }, { name: 'basic' }]);
     }
