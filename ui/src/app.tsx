@@ -29,16 +29,6 @@ export function App() {
       active:
         path === "/" || path === "/projects" || path.startsWith("/projects/"),
     },
-    ...(user
-      ? [{ href: "/account", label: "My account", active: path === "/account" }]
-      : [
-          { href: "/login", label: "Sign in", active: path === "/login" },
-          {
-            href: "/register",
-            label: "Register",
-            active: path === "/register",
-          },
-        ]),
     ...(isAdmin
       ? [
           {
@@ -49,6 +39,12 @@ export function App() {
         ]
       : []),
   ];
+  const accountLinks = user
+    ? [{ href: "/account", label: "My account", active: path === "/account" }]
+    : [
+        { href: "/login", label: "Login", active: path === "/login" },
+        { href: "/register", label: "Register", active: path === "/register" },
+      ];
 
   useEffect(() => {
     let active = true;
@@ -62,14 +58,60 @@ export function App() {
 
   return (
     <>
-      <header class="navbar bg-dark" data-bs-theme="dark">
-        <div class="container">
+      <header class="navbar navbar-expand bg-dark" data-bs-theme="dark">
+        <div class="container flex-wrap justify-content-start gap-3">
           <a class="navbar-brand mb-0 h1" href="/">
             API Playground
           </a>
-          <span class="navbar-text">
-            {user ? user.email : "Browsing as a guest"}
-          </span>
+          <nav
+            class="d-flex flex-grow-1 flex-wrap gap-3"
+            aria-label="Main navigation"
+          >
+            <ul class="navbar-nav flex-wrap gap-2">
+              {links.map((link) => (
+                <li class="nav-item" key={link.href}>
+                  <a
+                    class={`nav-link ${link.active ? "active" : ""}`}
+                    href={link.href}
+                    aria-current={link.active ? "page" : undefined}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <ul class="navbar-nav flex-wrap align-items-center gap-2 ms-auto">
+              <li class="navbar-text">
+                {user ? user.email : "Browsing as a guest"}
+              </li>
+              {accountLinks.map((link) => (
+                <li class="nav-item" key={link.href}>
+                  <a
+                    class={`nav-link ${link.active ? "active" : ""}`}
+                    href={link.href}
+                    aria-current={link.active ? "page" : undefined}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+              {user && (
+                <li class="nav-item">
+                  <button
+                    type="button"
+                    class="nav-link"
+                    disabled={busy}
+                    onClick={async () => {
+                      if (await runRequest(signOut, "Signed out."))
+                        route("/login");
+                    }}
+                  >
+                    Logout
+                  </button>
+                </li>
+              )}
+            </ul>
+          </nav>
         </div>
       </header>
       <main class="container py-4">
@@ -94,37 +136,6 @@ export function App() {
             Check API
           </button>
         </div>
-
-        <nav aria-label="Main navigation">
-          <ul class="nav nav-pills gap-2 mb-4">
-            {links.map((link) => (
-              <li class="nav-item" key={link.href}>
-                <a
-                  class={`nav-link ${link.active ? "active" : ""}`}
-                  href={link.href}
-                  aria-current={link.active ? "page" : undefined}
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-            {user && (
-              <li class="nav-item ms-auto">
-                <button
-                  type="button"
-                  class="nav-link"
-                  disabled={busy}
-                  onClick={async () => {
-                    if (await runRequest(signOut, "Signed out."))
-                      route("/login");
-                  }}
-                >
-                  Logout
-                </button>
-              </li>
-            )}
-          </ul>
-        </nav>
 
         <RequestStatus {...request} />
 
