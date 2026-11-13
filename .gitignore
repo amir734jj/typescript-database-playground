@@ -1,13 +1,14 @@
 # Dependencies
-/node_modules/
+node_modules/
 
 # Build output and temporary files
-/dist/
-/out-tsc/
-/tmp/
+dist/
+out-tsc/
+tmp/
+/api/wwwroot/
 
 # Local configuration and SQLite databases
-/.env
+.env
 *.db
 *.db-shm
 *.db-wal

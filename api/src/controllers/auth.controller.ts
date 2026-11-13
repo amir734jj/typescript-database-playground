@@ -1,8 +1,8 @@
 import { Body, Controller, HttpCode, Inject, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from '../services';
 import { JwtAuthenticationGuard } from '../guards';
-import { LoginRequest, RegisterRequest } from '../dtos';
+import { LoginRequest, RegisterRequest, TokenResponse, UserResponse } from '../dtos';
 import { BearerToken, CurrentUser } from '../decorators';
 import type { AuthenticatedUser } from '../interfaces';
 import { publicUser } from '../logic';
@@ -15,6 +15,7 @@ export class AuthController {
     @Post('register')
     @ApiOperation({ summary: 'Register an account' })
     @ApiBody({ type: RegisterRequest })
+    @ApiCreatedResponse({ type: UserResponse })
     async register(@Body() body: RegisterRequest) {
         return publicUser(await this.auth.register({
             name: body.name,
@@ -28,6 +29,7 @@ export class AuthController {
     @HttpCode(200)
     @ApiOperation({ summary: 'Create a persisted JWT session' })
     @ApiBody({ type: LoginRequest })
+    @ApiOkResponse({ type: TokenResponse })
     async login(@Body() body: LoginRequest) {
         return { ...await this.auth.login(body.email, body.password), tokenType: 'Bearer' };
     }
@@ -46,6 +48,7 @@ export class AuthController {
     @UseGuards(JwtAuthenticationGuard)
     @ApiBearerAuth('bearerAuth')
     @ApiOperation({ summary: 'Rotate the current JWT' })
+    @ApiOkResponse({ type: TokenResponse })
     async refresh(@BearerToken() token: string, @CurrentUser() user: AuthenticatedUser) {
         const refreshed = await this.auth.refresh(token, user);
         return { ...refreshed, tokenType: 'Bearer' };

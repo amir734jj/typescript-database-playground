@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Inject, Param, Patch, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { RoleService } from '../services';
 import { AdminGuard, JwtAuthenticationGuard } from '../guards';
-import { UpdateRoleRequest } from '../dtos';
+import { UpdateRoleRequest, UserResponse } from '../dtos';
 import { publicUser, routeId } from '../logic';
 
 @ApiTags('Administration')
@@ -14,6 +14,7 @@ export class AdminController {
 
     @Get('users')
     @ApiOperation({ summary: 'List users (admin only)' })
+    @ApiOkResponse({ type: UserResponse, isArray: true })
     async listUsers() {
         return (await this.roles.listUsers()).map(publicUser);
     }
@@ -22,6 +23,7 @@ export class AdminController {
     @ApiOperation({ summary: 'Assign admin or basic role (admin only)' })
     @ApiParam({ name: 'id', type: String, format: 'uuid' })
     @ApiBody({ type: UpdateRoleRequest })
+    @ApiOkResponse({ type: UserResponse })
     async setRole(@Param('id') id: string, @Body() body: UpdateRoleRequest) {
         return publicUser(await this.roles.setRole(routeId(id), body.role));
     }

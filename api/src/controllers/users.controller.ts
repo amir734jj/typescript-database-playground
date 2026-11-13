@@ -1,9 +1,9 @@
 import { BadRequestException, Body, Controller, Delete, Get, HttpCode, Inject, NotFoundException, Patch, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import _ from 'lodash';
 import { RoleService, UserService } from '../services';
 import { JwtAuthenticationGuard } from '../guards';
-import { UpdateUserRequest } from '../dtos';
+import { UpdateUserRequest, UserResponse } from '../dtos';
 import { CurrentUser } from '../decorators';
 import type { AuthenticatedUser } from '../interfaces';
 import { publicUser } from '../logic';
@@ -20,6 +20,7 @@ export class UsersController {
 
     @Get('me')
     @ApiOperation({ summary: 'Read own profile' })
+    @ApiOkResponse({ type: UserResponse })
     me(@CurrentUser() user: AuthenticatedUser) {
         return publicUser(user);
     }
@@ -27,6 +28,7 @@ export class UsersController {
     @Patch('me')
     @ApiOperation({ summary: 'Update own profile' })
     @ApiBody({ type: UpdateUserRequest })
+    @ApiOkResponse({ type: UserResponse })
     async update(
         @CurrentUser() currentUser: AuthenticatedUser,
         @Body() body: UpdateUserRequest,

@@ -41,7 +41,13 @@ module.exports = {
             },
         },
         {
-            files: ['src/dtos/requests.dto.ts', 'src/guards/authentication.ts'],
+            files: ['tests/*.test.mjs'],
+            rules: {
+                'import/extensions': ['error', 'always', { ignorePackages: true }],
+            },
+        },
+        {
+            files: ['src/dtos/requests.dto.ts', 'src/dtos/responses.dto.ts', 'src/guards/authentication.ts'],
             rules: {
                 'max-classes-per-file': 'off',
             },

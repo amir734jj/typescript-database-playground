@@ -1,7 +1,8 @@
 import type { Project } from '../entities';
 import type { AuthenticatedUser } from '../interfaces';
+import type { ProjectResponse, UserResponse } from '../dtos';
 
-export function publicUser(user: AuthenticatedUser) {
+export function publicUser(user: AuthenticatedUser): UserResponse {
     return {
         id: user.id,
         name: user.name,
@@ -11,7 +12,7 @@ export function publicUser(user: AuthenticatedUser) {
     };
 }
 
-export function publicProject(project: Project) {
+export function publicProject(project: Project): ProjectResponse {
     return {
         id: project.id,
         name: project.name,

@@ -1,8 +1,8 @@
 import { BadRequestException, Body, Controller, Delete, Get, HttpCode, Inject, NotFoundException, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { ProjectService } from '../services';
 import { JwtAuthenticationGuard } from '../guards';
-import { CreateProjectRequest, ListProjectsRequest, UpdateProjectRequest } from '../dtos';
+import { CreateProjectRequest, ListProjectsRequest, ProjectResponse, UpdateProjectRequest } from '../dtos';
 import { CurrentUser } from '../decorators';
 import type { AuthenticatedUser } from '../interfaces';
 import { publicProject, routeId } from '../logic';
@@ -14,6 +14,7 @@ export class ProjectsController {
 
     @Get()
     @ApiOperation({ summary: 'List all public projects' })
+    @ApiOkResponse({ type: ProjectResponse, isArray: true })
     async list(@Query() { skip, limit }: ListProjectsRequest) {
         return (await this.projects.listPublic(skip, limit)).map(publicProject);
     }
@@ -23,6 +24,7 @@ export class ProjectsController {
     @ApiBearerAuth('bearerAuth')
     @ApiOperation({ summary: 'Create a project' })
     @ApiBody({ type: CreateProjectRequest })
+    @ApiCreatedResponse({ type: ProjectResponse })
     async create(
         @CurrentUser() user: AuthenticatedUser,
         @Body() body: CreateProjectRequest,
@@ -39,6 +41,7 @@ export class ProjectsController {
     @ApiBearerAuth('bearerAuth')
     @ApiOperation({ summary: 'Read an owned project' })
     @ApiParam({ name: 'id', type: String, format: 'uuid' })
+    @ApiOkResponse({ type: ProjectResponse })
     async find(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
         const project = await this.projects.findOwned(routeId(id), user.id);
         if (!project) {
@@ -53,6 +56,7 @@ export class ProjectsController {
     @ApiOperation({ summary: 'Update an owned project' })
     @ApiParam({ name: 'id', type: String, format: 'uuid' })
     @ApiBody({ type: UpdateProjectRequest })
+    @ApiOkResponse({ type: ProjectResponse })
     async update(
         @CurrentUser() user: AuthenticatedUser,
         @Param('id') id: string,
@@ -77,6 +81,7 @@ export class ProjectsController {
     @ApiBearerAuth('bearerAuth')
     @ApiOperation({ summary: 'Delete an owned project' })
     @ApiParam({ name: 'id', type: String, format: 'uuid' })
+    @ApiNoContentResponse()
     async delete(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
         if (!(await this.projects.deleteOwned(routeId(id), user.id))) {
             throw new NotFoundException('Project not found.');
