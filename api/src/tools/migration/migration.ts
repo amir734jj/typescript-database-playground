@@ -39,7 +39,7 @@ export function isMigration(value: unknown): value is VersionedMigration {
     const prototype: unknown = _.get(value, 'prototype');
 
     return _.isSafeInteger(version) && _.gt(version, 0)
-        && typeof name === 'string' && !_.isEmpty(_.trim(name))
+        && _.isString(name) && !_.isEmpty(_.trim(name))
         && _.isObjectLike(prototype)
         && _.isFunction(_.get(prototype, 'up'))
         && _.isFunction(_.get(prototype, 'down'));

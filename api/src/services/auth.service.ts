@@ -70,7 +70,7 @@ export class AuthService {
     }
 
     async authenticate(token: string, subject: unknown): Promise<User | null> {
-        if (typeof subject !== 'string' || !isUUID(subject, '4')) {
+        if (!_.isString(subject) || !isUUID(subject, '4')) {
             return null;
         }
         const storedToken = await this.tokens.findValid(hashToken(token), subject);

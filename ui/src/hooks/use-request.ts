@@ -1,11 +1,12 @@
 import { isAxiosError, isCancel } from "axios";
 import { useCallback, useLayoutEffect, useMemo, useState } from "preact/hooks";
 import { useAuthStore } from "../state/auth";
+import _ from 'lodash';
 
 function errorMessage(failure: unknown): string {
   if (isAxiosError<{ error?: unknown }>(failure)) {
     const message = failure.response?.data?.error;
-    if (typeof message === "string") return message;
+    if (_.isString(message)) return message;
     if (!failure.response)
       return "Cannot reach the API. Check that the server is running.";
     return `Request failed (${failure.response.status}).`;

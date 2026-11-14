@@ -1,9 +1,10 @@
 import { ValidatorConstraint, type ValidatorConstraintInterface } from 'class-validator';
+import _ from 'lodash';
 
 @ValidatorConstraint({ name: 'passwordByteLength' })
 export class PasswordByteLength implements ValidatorConstraintInterface {
     validate(value: unknown): boolean {
-        return typeof value !== 'string' || Buffer.byteLength(value, 'utf8') <= 72;
+        return !_.isString(value) || Buffer.byteLength(value, 'utf8') <= 72;
     }
 
     defaultMessage(): string {
