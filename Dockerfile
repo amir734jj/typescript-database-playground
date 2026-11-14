@@ -1,4 +1,4 @@
-FROM node:24-bookworm-slim AS ui-build
+FROM node:24-alpine AS ui-build
 
 WORKDIR /app/ui
 COPY ui/package.json ui/package-lock.json ./
@@ -6,11 +6,9 @@ RUN npm ci
 COPY ui/ ./
 RUN npm run build
 
-FROM node:24-bookworm-slim AS api-build
+FROM node:24-alpine AS api-build
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends python3 make g++ \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache python3 make g++
 
 WORKDIR /app/api
 COPY api/package.json api/package-lock.json ./
@@ -18,7 +16,7 @@ RUN npm ci
 COPY api/ ./
 RUN npm run build && npm prune --omit=dev
 
-FROM node:24-bookworm-slim AS runtime
+FROM node:24-alpine AS runtime
 
 ENV NODE_ENV=production \
     PORT=3000 \
