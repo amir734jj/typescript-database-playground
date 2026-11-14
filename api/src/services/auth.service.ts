@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import _ from 'lodash';
 import { DateTime } from 'luxon';
-import { Op, Transaction } from 'sequelize';
+import { Op } from 'sequelize';
 import { ConflictException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { isUUID } from 'class-validator';
 import { Sequelize } from 'sequelize-typescript';
@@ -41,7 +41,7 @@ export class AuthService {
     ): Promise<User> {
         const { password, ...profile } = data;
         const passwordHash = await bcrypt.hash(password, 12);
-        return this.sequelize.transaction({ type: Transaction.TYPES.IMMEDIATE }, async () => {
+        return this.sequelize.transaction(async () => {
             if (await this.users.findByEmail(data.email)) {
                 throw new ConflictException('An account with this email already exists.');
             }

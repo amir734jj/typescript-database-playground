@@ -34,13 +34,13 @@
     "luxon": "^3.7.2",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
+    "pg": "^8.16.3",
     "pino": "^10.4.0",
     "pino-http": "^11.0.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
     "sequelize": "^6.37.8",
     "sequelize-typescript": "^2.1.6",
-    "sqlite3": "^5.1.7",
     "umzug": "^3.8.2"
   },
   "devDependencies": {
@@ -59,6 +59,7 @@
     "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-import": "^2.32.0",
     "pino-pretty": "^13.2.0",
+    "sqlite3": "^5.1.7",
     "tsc-alias": "^1.9.10",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3"

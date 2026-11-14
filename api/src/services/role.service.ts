@@ -1,4 +1,3 @@
-import { Transaction } from 'sequelize';
 import { ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
 import { UserRoleName } from '../enums';
@@ -34,7 +33,7 @@ export class RoleService {
     }
 
     async setRole(userId: string, roleName: UserRoleName): Promise<User> {
-        return this.sequelize.transaction({ type: Transaction.TYPES.IMMEDIATE }, async () => {
+        return this.sequelize.transaction(async () => {
             const user = await User.findByPk(userId);
             if (!user) {
                 throw new NotFoundException('User not found.');
@@ -69,7 +68,7 @@ export class RoleService {
     }
 
     async deleteUser(userId: string): Promise<void> {
-        await this.sequelize.transaction({ type: Transaction.TYPES.IMMEDIATE }, async () => {
+        await this.sequelize.transaction(async () => {
             const adminRole = await this.findRole(UserRoleName.ADMIN);
             const userIsAdmin = (await UserRole.count({
                 where: { userId, roleId: adminRole.id },

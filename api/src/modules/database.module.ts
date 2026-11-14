@@ -9,7 +9,7 @@ import { logger } from '../tools/logger.ts';
     providers: [{
         provide: Sequelize,
         inject: [ConfigService],
-        useFactory: (configService: ConfigService) => createDatabase(configService.get<string>('DATABASE_URL', 'sqlite.db')),
+        useFactory: (configService: ConfigService) => createDatabase(configService.get<string>('DATABASE_URL')),
     }],
     exports: [Sequelize],
 })
